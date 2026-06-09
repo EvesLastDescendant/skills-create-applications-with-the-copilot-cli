@@ -5,6 +5,12 @@
   "bin": {
     "calc": "src/cli.js"
   },
+  "scripts": {
+    "test": "jest --colors"
+  },
+  "devDependencies": {
+    "jest": "^29.6.0"
+  },
   "keywords": [],
   "license": "MIT"
 }
