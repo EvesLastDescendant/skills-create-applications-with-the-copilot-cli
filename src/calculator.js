@@ -5,9 +5,13 @@
  * - sub: subtraction (a - b)
  * - mul: multiplication (a * b)
  * - div: division (a / b)
+ * - modulo: remainder (a % b)
+ * - power: exponentiation (base ** exponent)
+ * - squareRoot: square root (unary)
  *
  * This module provides the basic arithmetic functions and a compute() helper
- * that accepts either operation names (add, sub, mul, div) or symbols (+, -, *, /).
+ * that accepts operation names or common symbols. squareRoot is unary and only
+ * requires one argument.
  */
 
 function parseNumber(value) {
@@ -35,7 +39,27 @@ function div(a, b) {
   return a / b;
 }
 
+function modulo(a, b) {
+  if (b === 0) throw new Error('Modulo by zero');
+  return a % b;
+}
+
+function power(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+function squareRoot(n) {
+  if (n < 0) throw new Error('Square root of negative number');
+  return Math.sqrt(n);
+}
+
 function compute(op, aRaw, bRaw) {
+  // Handle unary sqrt operation separately
+  if (op === 'sqrt' || op === 'squareRoot' || op === '√') {
+    const a = parseNumber(aRaw);
+    return squareRoot(a);
+  }
+
   const a = parseNumber(aRaw);
   const b = parseNumber(bRaw);
 
@@ -54,6 +78,15 @@ function compute(op, aRaw, bRaw) {
     case 'div':
     case '/':
       return div(a, b);
+    case 'mod':
+    case 'modulo':
+    case '%':
+      return modulo(a, b);
+    case 'pow':
+    case 'power':
+    case '^':
+    case '**':
+      return power(a, b);
     default:
       throw new Error(`Unsupported operation: ${op}`);
   }
@@ -65,5 +98,8 @@ module.exports = {
   sub,
   mul,
   div,
+  modulo,
+  power,
+  squareRoot,
   compute,
 };
